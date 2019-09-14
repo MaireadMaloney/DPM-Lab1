@@ -23,14 +23,19 @@ public class BangBangController extends UltrasonicController {
     if (Math.abs(distError) <= BAND_WIDTH) { // Within limits, same speed
     LEFT_MOTOR.setSpeed(FWDSPEED); // Start moving forward
     RIGHT_MOTOR.setSpeed(FWDSPEED);
+    System.out.println("Straight " + distance);
     }
     else if (distError > 0) { // Robot is too far, slow inside wheel to get closer to wall
     LEFT_MOTOR.setSpeed(FWDSPEED);
     RIGHT_MOTOR.setSpeed(FWDSPEED - BANGBANG_RIGHT);
+    System.out.println("Right " + distance);
+    System.out.println(distError);
     }
     else if (distError < 0) { //Robot is too close, slow outside wheel to move away from wall
     LEFT_MOTOR.setSpeed(FWDSPEED - BANGBANG_LEFT);
     RIGHT_MOTOR.setSpeed(FWDSPEED);
+    System.out.println("Left " + distance);
+    System.out.println(distError);
     }
   }
 
