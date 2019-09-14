@@ -5,9 +5,7 @@ import static ca.mcgill.ecse211.lab1.Resources.*;
 public class PController extends UltrasonicController {
 
   public static int distError=0; // Error (amount to close or too far in meters
-  public static final int DEADBAND = 2; // Error threshold
   public static final int FWDSPEED = 150; // Default rotational speed of wheels
-  public static final int SLEEPINT = 50; // Sleep interval 50 mS = 20Hz
   
   public PController() {
     LEFT_MOTOR.setSpeed(FWDSPEED); // Initialize motor rolling forward
@@ -28,22 +26,15 @@ public class PController extends UltrasonicController {
       RIGHT_MOTOR.setSpeed(FWDSPEED);
     }
     
-    else if (distError < 0) { //Too far from the wall
+    else if (distError < 0) { //Too close to the wall, change wheel speeds based on magnitude of error
     LEFT_MOTOR.setSpeed(FWDSPEED+(deltaspeed*distError));
     RIGHT_MOTOR.setSpeed(FWDSPEED-(deltaspeed*distError));
-    //LEFT_MOTOR.forward();
-    //RIGHT_MOTOR.forward();
     }
     
-    else if (distError > 0) { // Too close from the wall
+    else if (distError > 0) { // Too far from the wall, change wheel speeds based on magnitude of error
       LEFT_MOTOR.setSpeed(FWDSPEED+(deltaspeed*distError));
       RIGHT_MOTOR.setSpeed(FWDSPEED-(deltaspeed*distError));
-      //LEFT_MOTOR.forward();
-      //RIGHT_MOTOR.forward();
       }
-
-
-    // TODO: process a movement based on the us distance passed in (P style)
   }
 
 
