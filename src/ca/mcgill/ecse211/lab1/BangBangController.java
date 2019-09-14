@@ -10,10 +10,41 @@ public class BangBangController extends UltrasonicController {
     LEFT_MOTOR.forward();
     RIGHT_MOTOR.forward();
   }
+  
+  public static int distError=0; // Error (amount to close or too far in meters
+  public static final int FWDSPEED = 200; // Default rotational speed of wheels
+  public static final int DELTASPD = 150; // Bang-bang constant
+  public static final int SLEEPINT = 50; // Sleep interval 50 mS = 20Hz
 
   @Override
   public void processUSData(int distance) {
     filter(distance);
+    
+    distError=distance - BAND_CENTER; // Compute error
+    if (Math.abs(distError) <= BAND_WIDTH) { // Within limits, same speed
+    LEFT_MOTOR.setSpeed(FWDSPEED); // Start moving forward
+    RIGHT_MOTOR.setSpeed(FWDSPEED);
+    //LEFT_MOTOR.forward();
+    //RIGHT_MOTOR.forward();
+    }
+    else if (distError > 0) { // Too close to the wall
+    LEFT_MOTOR.setSpeed(FWDSPEED);
+    RIGHT_MOTOR.setSpeed(FWDSPEED-DELTASPD);
+    //LEFT_MOTOR.forward();
+    //RIGHT_MOTOR.forward();
+    }
+    else if (distError < 0) {
+    LEFT_MOTOR.setSpeed(FWDSPEED-100);
+    RIGHT_MOTOR.setSpeed(FWDSPEED);
+    //LEFT_MOTOR.forward();
+   // RIGHT_MOTOR.forward();
+    }
+//    try {
+//      Thread.sleep(SLEEPINT);
+//    } catch (InterruptedException e) {
+//      // TODO Auto-generated catch block
+//      e.printStackTrace();
+//    } // Allow other threads
 
     // TODO: process a movement based on the us distance passed in (BANG-BANG style)
   }
