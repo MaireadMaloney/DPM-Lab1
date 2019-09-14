@@ -13,8 +13,8 @@ public class BangBangController extends UltrasonicController {
   
   public static int distError=0; // Error (amount to close or too far in meters
   public static final int FWDSPEED = 250; // Default rotational speed of wheels
-  public static final int BANGBANG_RIGHT = 145; //
-  public static final int BANGBANG_LEFT = 225;
+  public static final int BANGBANG_RIGHT = 145; //Bang Bang constant for right motor
+  public static final int BANGBANG_LEFT = 225; //Bang Bang constant for left motor
   @Override
   public void processUSData(int distance) {
     filter(distance);
