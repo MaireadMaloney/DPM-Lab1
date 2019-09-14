@@ -12,10 +12,9 @@ public class BangBangController extends UltrasonicController {
   }
   
   public static int distError=0; // Error (amount to close or too far in meters
-  public static final int FWDSPEED = 200; // Default rotational speed of wheels
-  public static final int DELTASPD = 150; // Bang-bang constant
-  public static final int SLEEPINT = 50; // Sleep interval 50 mS = 20Hz
-
+  public static final int FWDSPEED = 250; // Default rotational speed of wheels
+  public static final int BANGBANG_RIGHT = 145; //
+  public static final int BANGBANG_LEFT = 225;
   @Override
   public void processUSData(int distance) {
     filter(distance);
@@ -24,29 +23,15 @@ public class BangBangController extends UltrasonicController {
     if (Math.abs(distError) <= BAND_WIDTH) { // Within limits, same speed
     LEFT_MOTOR.setSpeed(FWDSPEED); // Start moving forward
     RIGHT_MOTOR.setSpeed(FWDSPEED);
-    //LEFT_MOTOR.forward();
-    //RIGHT_MOTOR.forward();
     }
-    else if (distError > 0) { // Too far
-    LEFT_MOTOR.setSpeed(FWDSPEED + 20);
-    RIGHT_MOTOR.setSpeed(FWDSPEED - 125);
-    //LEFT_MOTOR.forward();
-    //RIGHT_MOTOR.forward();
+    else if (distError > 0) { // Robot is too far, slow inside wheel to get closer to wall
+    LEFT_MOTOR.setSpeed(FWDSPEED);
+    RIGHT_MOTOR.setSpeed(FWDSPEED - BANGBANG_RIGHT);
     }
-    else if (distError < 0) { //too close
-    LEFT_MOTOR.setSpeed(FWDSPEED-175);
-    RIGHT_MOTOR.setSpeed(FWDSPEED + 50);
-    //LEFT_MOTOR.forward();
-   // RIGHT_MOTOR.forward();
+    else if (distError < 0) { //Robot is too close, slow outside wheel to move away from wall
+    LEFT_MOTOR.setSpeed(FWDSPEED - BANGBANG_LEFT);
+    RIGHT_MOTOR.setSpeed(FWDSPEED);
     }
-//    try {
-//      Thread.sleep(SLEEPINT);
-//    } catch (InterruptedException e) {
-//      // TODO Auto-generated catch block
-//      e.printStackTrace();
-//    } // Allow other threads
-
-    // TODO: process a movement based on the us distance passed in (BANG-BANG style)
   }
 
   @Override
