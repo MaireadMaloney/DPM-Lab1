@@ -27,15 +27,15 @@ public class BangBangController extends UltrasonicController {
     //LEFT_MOTOR.forward();
     //RIGHT_MOTOR.forward();
     }
-    else if (distError > 0) { // Too close to the wall
-    LEFT_MOTOR.setSpeed(FWDSPEED);
-    RIGHT_MOTOR.setSpeed(FWDSPEED-DELTASPD);
+    else if (distError > 0) { // Too far
+    LEFT_MOTOR.setSpeed(FWDSPEED + 20);
+    RIGHT_MOTOR.setSpeed(FWDSPEED - 125);
     //LEFT_MOTOR.forward();
     //RIGHT_MOTOR.forward();
     }
-    else if (distError < 0) {
-    LEFT_MOTOR.setSpeed(FWDSPEED-100);
-    RIGHT_MOTOR.setSpeed(FWDSPEED);
+    else if (distError < 0) { //too close
+    LEFT_MOTOR.setSpeed(FWDSPEED-175);
+    RIGHT_MOTOR.setSpeed(FWDSPEED + 50);
     //LEFT_MOTOR.forward();
    // RIGHT_MOTOR.forward();
     }
