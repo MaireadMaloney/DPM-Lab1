@@ -28,8 +28,8 @@ public class PController extends UltrasonicController {
     }
     
     else if (distError > 0) { //Too far from the wall, change wheel speeds based on magnitude of error
-    LEFT_MOTOR.setSpeed(FWDSPEED+(deltaspeed*distError));
-    RIGHT_MOTOR.setSpeed(FWDSPEED-(deltaspeed*distError));
+    LEFT_MOTOR.setSpeed(FWDSPEED-(deltaspeed*distError));
+    RIGHT_MOTOR.setSpeed(FWDSPEED+(deltaspeed*distError));
     System.out.println("Right " + distance);
     System.out.println(distError);
     }
