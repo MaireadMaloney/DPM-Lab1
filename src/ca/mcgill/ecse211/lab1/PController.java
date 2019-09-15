@@ -5,7 +5,8 @@ import static ca.mcgill.ecse211.lab1.Resources.*;
 public class PController extends UltrasonicController {
 
   public static int distError=0; // Error (amount to close or too far in meters
-  public static final int FWDSPEED = 150; // Default rotational speed of wheels
+  public static final int FWDSPEED = 100; // Default rotational speed of wheels
+  public static final int BAND_CENTER2 = 25;
   
   public PController() {
     LEFT_MOTOR.setSpeed(FWDSPEED); // Initialize motor rolling forward
@@ -17,9 +18,9 @@ public class PController extends UltrasonicController {
   @Override
   public void processUSData(int distance) {
     filter(distance);
-    int deltaspeed = 2;
+    int deltaspeed = 5;
     
-    distError=distance - BAND_CENTER; // Compute error
+    distError=distance - BAND_CENTER2; // Compute error
     
     if(BAND_WIDTH > Math.abs(distError)) {
       LEFT_MOTOR.setSpeed(FWDSPEED); // Start moving forward
