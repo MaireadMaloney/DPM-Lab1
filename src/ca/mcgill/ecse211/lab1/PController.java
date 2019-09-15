@@ -20,8 +20,8 @@ public class PController extends UltrasonicController {
   @Override
   public void processUSData(int distance) {
     filter(distance);
-    int deltaSpeedSlow = 1;
-    int deltaSpeedFast = 4;
+    int deltaSpeedSlow = 2;
+    int deltaSpeedFast = 3;
     distError=distance - BAND; // Compute error
     int speedChangeSlow = Math.abs(deltaSpeedSlow * distError);
     int speedChangeFast = Math.abs(deltaSpeedFast * distError);
@@ -46,12 +46,17 @@ public class PController extends UltrasonicController {
     RIGHT_MOTOR.setSpeed(FWDSPEED-(speedChangeFast));
     System.out.println("Right " + distance);
     System.out.println(distError);
+    System.out.println(FWDSPEED+speedChangeSlow);
+    System.out.println(FWDSPEED-speedChangeFast);
     }
     else if (distError < 0) { // Too close to the wall, change wheel speeds based on magnitude of error
       RIGHT_MOTOR.setSpeed(FWDSPEED+(speedChangeFast));
       LEFT_MOTOR.setSpeed(FWDSPEED-(speedChangeFast));
       System.out.println("Left " + distance );
       System.out.println(distError);
+      System.out.println(FWDSPEED+speedChangeFast);
+      System.out.println(FWDSPEED-speedChangeFast);
+      }
       }
   }
 
