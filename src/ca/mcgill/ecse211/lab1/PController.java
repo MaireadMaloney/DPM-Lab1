@@ -20,23 +20,24 @@ public class PController extends UltrasonicController {
     int deltaspeed = 2;
     
     distError=distance - BAND_CENTER; // Compute error
+    int speedChange = Math.abs(deltaspeed * distError);
     
-    if(BAND_WIDTH > Math.abs(distError)) {
+    if(BAND_WIDTH >= Math.abs(distError)) {
       LEFT_MOTOR.setSpeed(FWDSPEED); // Start moving forward
       RIGHT_MOTOR.setSpeed(FWDSPEED);
       System.out.println("Striaght " + distance );
     }
     
     else if (distError > 0) { //Too far from the wall, change wheel speeds based on magnitude of error
-    LEFT_MOTOR.setSpeed(FWDSPEED-(deltaspeed*distError));
-    RIGHT_MOTOR.setSpeed(FWDSPEED+(deltaspeed*distError));
+    LEFT_MOTOR.setSpeed(FWDSPEED+(speedChange));
+    RIGHT_MOTOR.setSpeed(FWDSPEED-(speedChange));
     System.out.println("Right " + distance);
     System.out.println(distError);
     }
     
     else if (distError < 0) { // Too close to the wall, change wheel speeds based on magnitude of error
-      LEFT_MOTOR.setSpeed(FWDSPEED-(deltaspeed*distError));
-      RIGHT_MOTOR.setSpeed(FWDSPEED+(deltaspeed*distError));
+      LEFT_MOTOR.setSpeed(FWDSPEED-(speedChange));
+      RIGHT_MOTOR.setSpeed(FWDSPEED+(speedChange));
       System.out.println("Left " + distance );
       System.out.println(distError);
       }
