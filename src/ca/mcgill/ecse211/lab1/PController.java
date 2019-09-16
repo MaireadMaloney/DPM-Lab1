@@ -3,16 +3,19 @@ package ca.mcgill.ecse211.lab1;
 import static ca.mcgill.ecse211.lab1.Resources.*;
 
 public class PController extends UltrasonicController {
-
-  public static int distError = 0; // Error (amount to close or too far in meters
+  /**
+   * The distance, either positive or negative from the BAND_CENTER (cm).
+   */
+  public static int distError = 0;
+  /**
+   * The default rotation speed of the wheels in Deg/s.
+   */
   public static final int FWDSPEED = 150; // Default rotational speed of wheels
-  public static final int BAND = 35;
-  public static final int BAND_W = 4;
 
 
   public PController() {
-    LEFT_MOTOR.setSpeed(FWDSPEED); // Initialize motor rolling forward
-    RIGHT_MOTOR.setSpeed(FWDSPEED);
+    LEFT_MOTOR.setSpeed(MOTOR_HIGH); // Initialize motor rolling forward
+    RIGHT_MOTOR.setSpeed(MOTOR_HIGH);
     LEFT_MOTOR.forward();
     RIGHT_MOTOR.forward();
   }
@@ -20,49 +23,50 @@ public class PController extends UltrasonicController {
   @Override
   public void processUSData(int distance) {
     filter(distance);
-    int deltaSpeedSlow = 3;
-    int deltaSpeedFast = 6;
-    distError = distance - BAND; // Compute error
-    int speedChangeSlow = Math.abs(deltaSpeedSlow * distError);
-    int speedChangeFast = Math.abs(deltaSpeedFast * distError);
+    int deltaspeed = 2;
+    distError = distance - P_BAND_CENTER; // Compute error
+    int speedChange = Math.abs(deltaspeed * distError);
 
-    if (distError == 2147483647) { // handles bad reading
-      distError = -25;
+    if (distance == 2147483647) { // Handles bad reading
+      LEFT_MOTOR.backward();
+      LEFT_MOTOR.setSpeed(MOTOR_HIGH + (50));
+      RIGHT_MOTOR.setSpeed((MOTOR_HIGH) + 70);
+      System.out.println("weird value");
     }
-    if (BAND_W >= Math.abs(distError)) {
-      LEFT_MOTOR.setSpeed(FWDSPEED);// Start moving forward
-      RIGHT_MOTOR.setSpeed(FWDSPEED);
+
+    // CASE 1: IN RANGE
+    if (BAND_WIDTH >= Math.abs(distError)) {
+      LEFT_MOTOR.setSpeed(MOTOR_HIGH); // Start moving forward
+      RIGHT_MOTOR.setSpeed(MOTOR_HIGH);
       RIGHT_MOTOR.forward();
       LEFT_MOTOR.forward();
-      System.out.println("Striaght " + distance);
-    } else if (distError > 0) { // Too far from the wall, change wheel speeds based on magnitude of error
-      if (distError > 70) { // Putting cap on speed change
-        distError = 70;
-        speedChangeSlow = deltaSpeedSlow * distError;
-        speedChangeFast = deltaSpeedFast * distError;
-      }
-      LEFT_MOTOR.setSpeed(FWDSPEED + (speedChangeSlow));
-      RIGHT_MOTOR.setSpeed(FWDSPEED - (speedChangeSlow));
-      System.out.println("Right " + distance);
-      // System.out.println(distError);
-      // System.out.println(FWDSPEED+speedChangeSlow);
-      // System.out.println(FWDSPEED-speedChangeFast);
-    } else if (distError < 0) { // Too close to the wall, change wheel speeds based on magnitude of error
+    }
 
-      RIGHT_MOTOR.setSpeed(FWDSPEED + (speedChangeFast));
-      LEFT_MOTOR.setSpeed(FWDSPEED - (speedChangeFast));
-      System.out.println("Left " + distance);
-      // System.out.println(distError);
-      // System.out.println(FWDSPEED+speedChangeFast);
-      // System.out.println(FWDSPEED-speedChangeFast);
+    // CASE 2: TOO FAR
+    else if (distError > 3) { // Too far from the wall, change wheel speeds based on magnitude of error
+      LEFT_MOTOR.forward();
+      LEFT_MOTOR.setSpeed(MOTOR_HIGH + (speedChange) - 35);
+      RIGHT_MOTOR.setSpeed(MOTOR_HIGH - (speedChange));
+    }
+
+    // CASE 3: TOO CLOSE
+    else if (distError < 0) { // Too close to the wall, change wheel speeds based on magnitude of error
+      LEFT_MOTOR.forward();
+      RIGHT_MOTOR.setSpeed(MOTOR_HIGH + (speedChange) + 115);
+      LEFT_MOTOR.setSpeed(MOTOR_HIGH - (speedChange));
+    }
+
+    if (distError < -23) { // Very close to wall, changes robot direction away from wall
+      LEFT_MOTOR.backward();
+      LEFT_MOTOR.setSpeed(MOTOR_HIGH + (50));
+      RIGHT_MOTOR.setSpeed(MOTOR_HIGH + 100);
+      RIGHT_MOTOR.forward();
+      System.out.println("close");
     }
   }
-
-
 
   @Override
   public int readUSDistance() {
     return this.distance;
   }
-
 }

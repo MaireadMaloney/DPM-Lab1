@@ -32,7 +32,7 @@ public class BangBangController extends UltrasonicController {
   public void processUSData(int distance) {
     filter(distance);
     
-    distError=distance - BAND_CENTER; // Compute error
+    distError=distance - B_BAND_CENTER; // Compute error
     if (Math.abs(distError) <= BAND_WIDTH) { // Within limits, same speed
     LEFT_MOTOR.setSpeed(FWDSPEED); // Start moving forward
     RIGHT_MOTOR.setSpeed(FWDSPEED);
