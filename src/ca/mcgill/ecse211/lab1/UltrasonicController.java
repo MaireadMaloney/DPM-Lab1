@@ -8,9 +8,9 @@ import static ca.mcgill.ecse211.lab1.Resources.*;
 public abstract class UltrasonicController {
 
   int distance;
-  
+
   int filterControl;
-  
+
   /**
    * Perform an action based on the US data input.
    * 
@@ -24,9 +24,10 @@ public abstract class UltrasonicController {
    * @return the distance between the US sensor and an obstacle in cm
    */
   public abstract int readUSDistance();
-  
+
   /**
    * Rudimentary filter - toss out invalid samples corresponding to null signal.
+   * 
    * @param distance distance in cm
    */
   void filter(int distance) {
@@ -42,5 +43,5 @@ public abstract class UltrasonicController {
       this.distance = distance;
     }
   }
-  
+
 }
