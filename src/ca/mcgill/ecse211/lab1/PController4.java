@@ -3,10 +3,14 @@ package ca.mcgill.ecse211.lab1;
 import static ca.mcgill.ecse211.lab1.Resources.*;
 
 public class PController4 extends UltrasonicController {
-
-  public static int distError = 0; // Error (amount to close or too far in meters)
-  public static final int FWDSPEED = 150; // Default rotational speed of wheels
-
+  /**
+   * The distance, either positive or negative from the BAND_CENTER (cm).
+   */
+  public static int distError = 0;
+  /**
+   * The default rotation speed of the wheels in Deg/s.
+   */
+  public static final int FWDSPEED = 150;
 
   public PController4() {
     LEFT_MOTOR.setSpeed(MOTOR_HIGH); // Initialize motor rolling forward
@@ -59,5 +63,4 @@ public class PController4 extends UltrasonicController {
   public int readUSDistance() {
     return this.distance;
   }
-
 }
