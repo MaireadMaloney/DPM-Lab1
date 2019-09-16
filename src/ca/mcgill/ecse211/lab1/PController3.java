@@ -3,8 +3,13 @@ package ca.mcgill.ecse211.lab1;
 import static ca.mcgill.ecse211.lab1.Resources.*;
 
 public class PController3 extends UltrasonicController {
-
-  public static int distError = 0; // Error (amount to close or too far in meters
+  /**
+   * The distance, either positive or negative from the BAND_CENTER (cm).
+   */
+  public static int distError = 0;
+  /**
+   * The default rotation speed of the wheels in Deg/s.
+   */
   public static final int FWDSPEED = 150; // Default rotational speed of wheels
 
 
@@ -22,16 +27,16 @@ public class PController3 extends UltrasonicController {
     distError = distance - BAND_CENTER; // Compute error
     int speedChange = Math.abs(deltaspeed * distError);
 
-
-    if (distance == 2147483647) { // handles bad reading
+    if (distance == 2147483647) { // Handles bad reading
       LEFT_MOTOR.backward();
       LEFT_MOTOR.setSpeed(MOTOR_HIGH + (50));
       RIGHT_MOTOR.setSpeed((MOTOR_HIGH) + 70);
       System.out.println("weird value");
     }
+
     // CASE 1: IN RANGE
     if (BAND_WIDTH >= Math.abs(distError)) {
-      LEFT_MOTOR.setSpeed(MOTOR_HIGH);// Start moving forward
+      LEFT_MOTOR.setSpeed(MOTOR_HIGH); // Start moving forward
       RIGHT_MOTOR.setSpeed(MOTOR_HIGH);
       RIGHT_MOTOR.forward();
       LEFT_MOTOR.forward();
@@ -42,7 +47,6 @@ public class PController3 extends UltrasonicController {
       LEFT_MOTOR.forward();
       LEFT_MOTOR.setSpeed(MOTOR_HIGH + (speedChange) - 35);
       RIGHT_MOTOR.setSpeed(MOTOR_HIGH - (speedChange));
-
     }
 
     // CASE 3: TOO CLOSE
@@ -50,16 +54,14 @@ public class PController3 extends UltrasonicController {
       LEFT_MOTOR.forward();
       RIGHT_MOTOR.setSpeed(MOTOR_HIGH + (speedChange) + 105);
       LEFT_MOTOR.setSpeed(MOTOR_HIGH - (speedChange));
-
     }
-    if (distError < -23) {
-      // RIGHT_MOTOR.setSpeed((MOTOR_HIGH+(speedChange)));
+
+    if (distError < -23) { // Very close to wall, changes robot direction away from wall
       LEFT_MOTOR.backward();
       LEFT_MOTOR.setSpeed(MOTOR_HIGH + (50));
       RIGHT_MOTOR.setSpeed(MOTOR_HIGH + 100);
       RIGHT_MOTOR.forward();
       System.out.println("close");
-
     }
   }
 
@@ -67,5 +69,4 @@ public class PController3 extends UltrasonicController {
   public int readUSDistance() {
     return this.distance;
   }
-
 }
