@@ -32,23 +32,23 @@ public class BangBangController extends UltrasonicController {
   }
     
     }
-    else if (distError > 0) { // Robot is too far, slow inside wheel to get closer to wall
+    else if (distError > 3) { // Robot is too far, slow inside wheel to get closer to wall
       LEFT_MOTOR.forward();
-     LEFT_MOTOR.setSpeed(FWDSPEED);
+     LEFT_MOTOR.setSpeed(FWDSPEED-50);
     RIGHT_MOTOR.setSpeed(FWDSPEED - BANGBANG_RIGHT);
     
     }
     else if (distError < 0) { //Robot is too close, slow outside wheel to move away from wall
       LEFT_MOTOR.forward();
       LEFT_MOTOR.setSpeed(FWDSPEED - BANGBANG_LEFT);
-    RIGHT_MOTOR.setSpeed(FWDSPEED);
+    RIGHT_MOTOR.setSpeed(FWDSPEED+50);
     
     }
-    if (distError < -23) {
+    if (distError < -18) {
       // RIGHT_MOTOR.setSpeed((MOTOR_HIGH+(speedChange)));
       LEFT_MOTOR.backward();
       LEFT_MOTOR.setSpeed(MOTOR_HIGH+(50));
-      RIGHT_MOTOR.setSpeed(MOTOR_HIGH+100);
+      RIGHT_MOTOR.setSpeed(MOTOR_HIGH+BANGBANG_RIGHT);
       RIGHT_MOTOR.forward();
       System.out.println("close");
 

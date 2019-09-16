@@ -19,7 +19,8 @@ public class Resources {
   /**
    * Offset from the wall (cm).
    */
-  public static final int BAND_CENTER = 35;
+  public static final int BAND_CENTER = 40;
+ 
   
   /**
    * Width of dead band (cm).
