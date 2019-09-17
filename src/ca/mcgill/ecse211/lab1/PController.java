@@ -30,8 +30,7 @@ public class PController extends UltrasonicController {
     if (distance == 2147483647) { // Handles bad reading
       LEFT_MOTOR.backward();
       LEFT_MOTOR.setSpeed(MOTOR_HIGH + (50));
-      RIGHT_MOTOR.setSpeed((MOTOR_HIGH) + 70);
-      System.out.println("weird value");
+      RIGHT_MOTOR.setSpeed((MOTOR_HIGH) + 100);
     }
 
     // CASE 1: IN RANGE
@@ -45,7 +44,7 @@ public class PController extends UltrasonicController {
     // CASE 2: TOO FAR
     else if (distError > 3) { // Too far from the wall, change wheel speeds based on magnitude of error
       LEFT_MOTOR.forward();
-      LEFT_MOTOR.setSpeed(MOTOR_HIGH + (speedChange) - 35);
+      LEFT_MOTOR.setSpeed(MOTOR_HIGH + (speedChange) - 40);
       RIGHT_MOTOR.setSpeed(MOTOR_HIGH - (speedChange));
     }
 
@@ -56,12 +55,11 @@ public class PController extends UltrasonicController {
       LEFT_MOTOR.setSpeed(MOTOR_HIGH - (speedChange));
     }
 
-    if (distError < -23) { // Very close to wall, changes robot direction away from wall
+    if (distError < -18) { // Very close to wall, changes robot direction away from wall
       LEFT_MOTOR.backward();
       LEFT_MOTOR.setSpeed(MOTOR_HIGH + (50));
       RIGHT_MOTOR.setSpeed(MOTOR_HIGH + 100);
       RIGHT_MOTOR.forward();
-      System.out.println("close");
     }
   }
 
